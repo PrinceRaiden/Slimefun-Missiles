@@ -2,6 +2,7 @@ package me.princeraiden.missiles.utils;
 
 import me.princeraiden.missiles.Missiles;
 import me.princeraiden.missiles.items.missiles.Missile;
+import me.princeraiden.missiles.effects.MissileEffect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -11,7 +12,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MissileAnimationRunnable implements Runnable {
+public class MissileControllerRunnable implements Runnable {
 
     private static final float locationError = 1;
     private static final float velocityError = 0.1F;
@@ -28,7 +29,7 @@ public class MissileAnimationRunnable implements Runnable {
     private boolean arrivalTimeIsSet;
     private long arrivalTime;
 
-    public MissileAnimationRunnable(Missiles addon, Block origin, Location target, Missile missile) {
+    public MissileControllerRunnable(Missiles addon, Block origin, Location target, Missile missile) {
         this.addon = addon;
         this.missile = missile;
 
@@ -141,6 +142,10 @@ public class MissileAnimationRunnable implements Runnable {
 
     private void explodeMissile(Location explosionLoc) {
         target.getWorld().createExplosion(explosionLoc, missile.getExplosionPower());
+
+        for (MissileEffect effect : missile.getEffects()) {
+            effect.handle(explosionLoc);
+        }
 
         // TODO effects and redstone translators then thats it
 

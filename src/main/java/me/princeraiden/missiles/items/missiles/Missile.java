@@ -4,8 +4,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
-import me.princeraiden.missiles.utils.MissilesHeads;
+import me.princeraiden.missiles.effects.MissileEffect;
 import org.bukkit.inventory.ItemStack;
 
 public class Missile extends SlimefunItem {
@@ -41,12 +40,5 @@ public class Missile extends SlimefunItem {
 
     public MissileEffect[] getEffects() {
         return effects;
-    }
-
-    public enum MissileEffect {
-        DISORIENTATION,
-        FIRE,
-        BLINDNESS,
-        NUCLEAR
     }
 }

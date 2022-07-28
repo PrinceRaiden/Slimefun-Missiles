@@ -37,7 +37,7 @@ public class LaunchComputerUI {
     private boolean armed;
     private AttemptLaunchCallback onAttemptLaunch;
     private int x;
-    private int y;
+    private int y = 200;
     private int z;
 
     public LaunchComputerUI(String id, String displayName, AttemptLaunchCallback onAttemptLaunch) {

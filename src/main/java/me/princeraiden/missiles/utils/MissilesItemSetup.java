@@ -5,13 +5,15 @@ import io.github.thebusybiscuit.slimefun4.api.items.groups.NestedItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.groups.SubItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import me.princeraiden.missiles.Missiles;
+import me.princeraiden.missiles.effects.BlindnessMissileEffect;
 import me.princeraiden.missiles.items.machines.LaunchComputer;
 import me.princeraiden.missiles.items.machines.MissileLauncher;
 import me.princeraiden.missiles.items.missiles.Missile;
 import me.princeraiden.missiles.items.resources.TitaniumOxide;
 import me.princeraiden.missiles.items.resources.VeryDeadlyRadioactiveItem;
+import me.princeraiden.missiles.effects.DisorientationMissileEffect;
+import me.princeraiden.missiles.effects.FireMissileEffect;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -106,7 +108,10 @@ public class MissilesItemSetup {
                         SlimefunItems.COPPER_WIRE, MissilesItems.NITROGLYCERIN, SlimefunItems.COPPER_WIRE,
                         MissilesItems.NITROGLYCERIN, MissilesItems.NITROGLYCERIN, MissilesItems.NITROGLYCERIN,
                         MissilesItems.TITANIUM_ALLOY, MissilesItems.ROCKET_FUEL, MissilesItems.TITANIUM_ALLOY
-                }, 10, 1, 50, Missile.MissileEffect.DISORIENTATION
+                }, 10, 1, 50,
+                new DisorientationMissileEffect(30),
+                new BlindnessMissileEffect(50),
+                new FireMissileEffect(10)
         ).register(addon);
     }
 }
