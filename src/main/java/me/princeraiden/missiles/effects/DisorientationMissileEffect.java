@@ -1,6 +1,12 @@
 package me.princeraiden.missiles.effects;
 
+import me.princeraiden.missiles.utils.MissileEffectUtils;
 import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.Map;
 
 public class DisorientationMissileEffect implements MissileEffect {
 
@@ -12,7 +18,16 @@ public class DisorientationMissileEffect implements MissileEffect {
 
     @Override
     public void handle(Location origin) {
+        Map<LivingEntity, Double> nearbyEntities = MissileEffectUtils.getNearbyLivingEntities(origin, radius);
 
+        for (Map.Entry<LivingEntity, Double> entry : nearbyEntities.entrySet()) {
+            LivingEntity entity = entry.getKey();
+            double distanceSquared = entry.getValue();
+            int duration = MissileEffectUtils.getPotionDuration(radius, distanceSquared);
+            int amplifier = MissileEffectUtils.getPotionAmplifier(duration);
+            PotionEffect effect = new PotionEffect(PotionEffectType.CONFUSION, duration, amplifier);
+            entity.addPotionEffect(effect);
+        }
     }
 
     @Override

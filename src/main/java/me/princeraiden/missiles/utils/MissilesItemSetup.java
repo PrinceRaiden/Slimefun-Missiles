@@ -111,7 +111,7 @@ public class MissilesItemSetup {
                 }, 10, 1, 50,
                 new DisorientationMissileEffect(30),
                 new BlindnessMissileEffect(50),
-                new FireMissileEffect(10)
+                new FireMissileEffect(10, 0.1)
         ).register(addon);
     }
 }
