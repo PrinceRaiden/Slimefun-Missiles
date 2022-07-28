@@ -90,4 +90,28 @@ public class MissilesItems {
     public static final SlimefunItemStack MISSILE_1KT = new SlimefunItemStack(
             "MISSILE_1KT", MissilesHeads.MISSILE.getBase64(), "&c1 Kiloton Missile"
     );
+
+    public static final SlimefunItemStack MISSILE_5KT = new SlimefunItemStack(
+            "MISSILE_5KT", MissilesHeads.MISSILE.getBase64(), "&c5 Kiloton Missile"
+    );
+
+    public static final SlimefunItemStack MISSILE_15KT_NUCLEAR = new SlimefunItemStack(
+            "MISSILE_15KT", MissilesHeads.MISSILE.getBase64(), "&c15 Kiloton Nuclear Missile"
+    );
+
+    public static final SlimefunItemStack MISSILE_50KT_NUCLEAR = new SlimefunItemStack(
+            "MISSILE_50KT", MissilesHeads.MISSILE.getBase64(), "&c50 Kiloton Nuclear Missile"
+    );
+
+    public static final SlimefunItemStack MISSILE_NUCLEAR = new SlimefunItemStack(
+            "MISSILE_NUCLEAR", MissilesHeads.MISSILE.getBase64(), "&cNuclear Missile"
+    );
+
+    public static final SlimefunItemStack MISSILE_COBALT = new SlimefunItemStack(
+            "MISSILE_COBALT", MissilesHeads.MISSILE.getBase64(), "&cRadioactive Cobalt Missile"
+    );
+
+    public static final SlimefunItemStack MISSILE_NAPALM = new SlimefunItemStack(
+            "MISSILE_NAPALM", MissilesHeads.MISSILE.getBase64(), "&cNapalm Missile"
+    );
 }
