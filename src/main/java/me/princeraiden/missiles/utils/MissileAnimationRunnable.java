@@ -8,6 +8,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MissileAnimationRunnable implements Runnable {
 
     private static final float locationError = 1;
@@ -21,6 +24,9 @@ public class MissileAnimationRunnable implements Runnable {
     private Missiles addon;
     private Location prevLoc;
     private int id;
+
+    private boolean arrivalTimeIsSet;
+    private long arrivalTime;
 
     public MissileAnimationRunnable(Missiles addon, Block origin, Location target, Missile missile) {
         this.addon = addon;
@@ -36,22 +42,39 @@ public class MissileAnimationRunnable implements Runnable {
         armorStand = origin.getWorld().spawn(origin.getLocation(), ArmorStand.class);
         armorStand.setVisible(false);
         armorStand.getEquipment().setHelmet(MissilesHeads.NITROGLYCERIN.getItemStack());
-        addon.getMissileUnloadListener().addMissileUuid(armorStand.getUniqueId());
     }
 
     @Override
     public void run() {
-        // test if missile has collided
-        if (prevLoc != null) {
-            double distanceSquared = armorStand.getLocation().distanceSquared(prevLoc);
-            if (distanceSquared < missile.getSpeed() - velocityError) {
-                explodeMissile();
+        if (arrivalTimeIsSet) { // if the armorstand has been unloaded, use a time based system to calculate when to explode
+            if (System.currentTimeMillis() >= arrivalTime) {
+                World world = target.getWorld();
+                Block explosionBlock = world.getHighestBlockAt(target);
+                explodeMissile(explosionBlock.getLocation());
                 addon.getServer().getScheduler().cancelTask(this.id);
             }
-        }
+        } else if (armorStand != null) { // if the armorstand is still loaded, use a simulation to calculate when to explode
+            // test if missiles velocity is too low (has collided or entered unloaded chunk)
+            if (prevLoc != null) {
+                double distanceSquared = armorStand.getLocation().distanceSquared(prevLoc);
 
-        // attempt to get to the cruising altitude before going to target
-        if (armorStand != null) {
+                if (distanceSquared < missile.getSpeed() - velocityError) {
+                    List<Block> nearbyBlocks = getAdjacentSolidBlocks(armorStand.getLocation());
+
+                    if (nearbyBlocks.size() > 0) { // if there are any nearby blocks, the missile has most likely collided, so explode it.
+                        explodeMissile(armorStand.getLocation());
+                        addon.getServer().getScheduler().cancelTask(this.id);
+                    } else { // if there are no nearby blocks, the missile has probably entered a nearby chunk, so schedule an explosion at the target
+                        double distance = armorStand.getLocation().distance(target);
+                        double ticks = distance / (missile.getSpeed() * missile.getSpeed());
+                        long milliseconds = (long) (ticks / 20 * 1000);
+                        arrivalTime = System.currentTimeMillis() + milliseconds;
+                        arrivalTimeIsSet = true;
+                    }
+                }
+            }
+
+            // attempt to get to the cruising altitude before going to target
             if (!isAtCruiseAlt) {
                 double armorStandY = armorStand.getLocation().getY();
                 if (armorStandY > target.getY() - locationError && armorStandY < target.getY() + locationError) {
@@ -82,6 +105,23 @@ public class MissileAnimationRunnable implements Runnable {
         }
     }
 
+    private List<Block> getAdjacentSolidBlocks(Location loc) {
+        List<Block> blocks = new ArrayList<>();
+        Block b = loc.getBlock();
+
+        for (int y = -2; y <= 2; y++) {
+            for (int x = -2; x <= 2; x++) {
+                for (int z = -2; z <= 2; z++) {
+                    Block adjacent = b.getRelative(x, y, z);
+                    if (adjacent.getType().isSolid())
+                        blocks.add(b.getRelative(x, y, z));
+                }
+            }
+        }
+
+        return blocks;
+    }
+
     private Vector getSmoothVelocity(Location l) {
         double armorStandY = armorStand.getLocation().getY();
         double distance = l.getY() - armorStandY;
@@ -99,17 +139,13 @@ public class MissileAnimationRunnable implements Runnable {
         return normalize ? vec.normalize().multiply(missile.getSpeed()) : vec;
     }
 
-    private void explodeMissile() {
-        World world = target.getWorld();
-        Block b = world.getHighestBlockAt(target);
-        target.getWorld().createExplosion(b.getLocation(), missile.getExplosionPower());
+    private void explodeMissile(Location explosionLoc) {
+        target.getWorld().createExplosion(explosionLoc, missile.getExplosionPower());
 
         // TODO effects and redstone translators then thats it
 
-        if (armorStand != null) {
+        if (armorStand != null)
             armorStand.remove();
-            armorStand = null;
-        }
     }
 
     public void setId(int id) {

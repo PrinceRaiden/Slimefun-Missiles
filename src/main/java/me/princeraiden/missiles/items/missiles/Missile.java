@@ -11,6 +11,9 @@ import org.bukkit.inventory.ItemStack;
 public class Missile extends SlimefunItem {
 
     private int explosionPower;
+    /**
+     * To find blocks per tick, square speed
+     */
     private float speed;
     private float accuracyRadius;
     private MissileEffect[] effects;

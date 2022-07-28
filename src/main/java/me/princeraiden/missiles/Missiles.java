@@ -1,7 +1,6 @@
 package me.princeraiden.missiles;
 
 import me.princeraiden.missiles.items.machines.MissileLauncher;
-import me.princeraiden.missiles.listeners.MissileUnloadListener;
 import me.princeraiden.missiles.utils.MissilesItemSetup;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,8 +22,6 @@ import java.util.Map;
 
 public class Missiles extends JavaPlugin implements SlimefunAddon {
 
-    private MissileUnloadListener missileUnloadListener;
-
     @Override
     public void onEnable() {
         // Read something from your config.yml
@@ -39,8 +36,6 @@ public class Missiles extends JavaPlugin implements SlimefunAddon {
     }
 
     private void registerListeners() {
-        missileUnloadListener = new MissileUnloadListener();
-        getServer().getPluginManager().registerEvents(missileUnloadListener, this);
     }
 
     @Override
@@ -56,9 +51,5 @@ public class Missiles extends JavaPlugin implements SlimefunAddon {
     @Override
     public JavaPlugin getJavaPlugin() {
         return this;
-    }
-
-    public MissileUnloadListener getMissileUnloadListener() {
-        return missileUnloadListener;
     }
 }
