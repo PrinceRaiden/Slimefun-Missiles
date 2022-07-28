@@ -40,7 +40,7 @@ public class MissileLauncher extends SlimefunItem {
         this.addon = addon;
     }
 
-    public void launchMissile(Block block, int x, int cruiseY, int z) {
+    public void launchMissile(Block block, Location target) {
         if (block.getState() instanceof Dropper) {
             Dropper dropper = (Dropper) block.getState();
             Inventory inv = dropper.getInventory();
@@ -51,15 +51,14 @@ public class MissileLauncher extends SlimefunItem {
 
                 if (sfItem instanceof Missile) {
                     Missile missile = (Missile) sfItem;
-                    displayMissileAnimation(block, x, cruiseY, z, missile);
+                    displayMissileAnimation(block, target, missile);
                     break;
                 }
             }
         }
     }
 
-    public void displayMissileAnimation(Block origin, int x, int y, int z, Missile missile) {
-        Location target = new Location(origin.getWorld(), x, y, z);
+    public void displayMissileAnimation(Block origin, Location target, Missile missile) {
         MissileAnimationRunnable runnable = new MissileAnimationRunnable(addon, origin, target, missile);
         int runnableId = addon.getServer().getScheduler().scheduleSyncRepeatingTask(addon, runnable, 0, 1);
         runnable.setId(runnableId);

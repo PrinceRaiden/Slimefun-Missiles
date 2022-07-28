@@ -80,8 +80,10 @@ public class MissilesItems {
     public static final SlimefunItemStack LAUNCH_COMPUTER = new SlimefunItemStack(
             "LAUNCH_COMPUTER", MissilesHeads.COMPUTER.getBase64(), "&cLaunch Computer",
             "",
-            "&aPlace next to the end rod on a",
-            "&aMissile launcher."
+            "&aPlace next to a missile launcher",
+            "",
+            LoreBuilder.powerBuffer(128),
+            LoreBuilder.powerPerSecond(16)
     );
 
     // Missiles
