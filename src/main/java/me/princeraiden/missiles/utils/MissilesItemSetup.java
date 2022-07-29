@@ -141,7 +141,7 @@ public class MissilesItemSetup {
                         MissilesItems.PLUTONIUM_239, MissilesItems.PLUTONIUM_239, MissilesItems.PLUTONIUM_239,
                         MissilesItems.ROCKET_CHAMBER_WALL, MissilesItems.MISSILE_15KT_NUCLEAR, MissilesItems.ROCKET_CHAMBER_WALL,
                         MissilesItems.ROCKET_FUEL, MissilesItems.ROCKET_FUEL, MissilesItems.ROCKET_FUEL
-                }, 35, 3, 30,
+                }, 35, 2, 6, 3, 30,
                 new DisorientationMissileEffect(100),
                 new BlindnessMissileEffect(80),
                 new RadiationMissileEffect(50),
@@ -153,7 +153,7 @@ public class MissilesItemSetup {
                         MissilesItems.PLUTONIUM_239, MissilesItems.PLUTONIUM_239, MissilesItems.PLUTONIUM_239,
                     MissilesItems.PLUTONIUM_239, MissilesItems.MISSILE_15KT_NUCLEAR, MissilesItems.PLUTONIUM_239,
                         MissilesItems.ROCKET_CHAMBER_WALL, MissilesItems.ROCKET_FUEL, MissilesItems.ROCKET_CHAMBER_WALL
-                }, 50, 3.5f, 25,
+                }, 50, 3, 10, 3.5f, 25,
                 new DisorientationMissileEffect(150),
                 new BlindnessMissileEffect(120),
                 new RadiationMissileEffect(90),
@@ -178,7 +178,7 @@ public class MissilesItemSetup {
                         MissilesItems.NAPALM, MissilesItems.MISSILE_5KT, MissilesItems.NAPALM,
                         MissilesItems.TITANIUM_ALLOY, MissilesItems.ROCKET_FUEL, MissilesItems.TITANIUM_ALLOY
                 }, 10, 3, 10,
-                new DisorientationMissileEffect(30), // TODO multiple explosions for larger missiles (nuclear should probably have ~4 explosions of same strength to increase damage radius)
+                new DisorientationMissileEffect(30),
                 new BlindnessMissileEffect(20),
                 new FireMissileEffect(50, 0.5)
         ).register(addon);

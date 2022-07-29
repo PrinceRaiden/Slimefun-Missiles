@@ -126,7 +126,8 @@ public class MissileControllerRunnable implements Runnable {
     private Vector getSmoothVelocity(Location l) {
         double armorStandY = armorStand.getLocation().getY();
         double distance = l.getY() - armorStandY;
-        Vector vec = getVelocity(l, false)
+        Vector vec = l.toVector()
+                .subtract(armorStand.getLocation().toVector())
                 .multiply(1 / distance)
                 .setY(distance)
                 .normalize()
@@ -134,14 +135,21 @@ public class MissileControllerRunnable implements Runnable {
         return vec;
     }
 
-    private Vector getVelocity(Location loc, boolean normalize) {
-        Vector vec = loc.toVector()
-                .subtract(armorStand.getLocation().toVector());
-        return normalize ? vec.normalize().multiply(missile.getSpeed()) : vec;
-    }
-
     private void explodeMissile(Location explosionLoc) {
-        target.getWorld().createExplosion(explosionLoc, missile.getExplosionPower());
+        float explosionRadius = missile.getExplosionDiameter() / 2f;
+        int explosionLowerBound = (int) -Math.floor(explosionRadius);
+        int explosionUpperBound = (int) Math.ceil(explosionRadius);
+
+        for (int xOffset = explosionLowerBound; xOffset <= explosionUpperBound; xOffset++) {
+            for (int zOffset = explosionLowerBound; zOffset <= explosionUpperBound; zOffset++) {
+                Location loc = new Location(
+                        explosionLoc.getWorld(),
+                        xOffset * missile.getExplosionSpacing() + explosionLoc.getX(),
+                        explosionLoc.getY(),
+                        zOffset * missile.getExplosionSpacing() + explosionLoc.getZ());
+                target.getWorld().createExplosion(loc, missile.getExplosionPower());
+            }
+        }
 
         for (MissileEffect effect : missile.getEffects()) {
             effect.handle(explosionLoc);
